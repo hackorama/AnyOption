@@ -128,7 +128,7 @@ AnyOption::init(int maxopt, int maxcharopt )
 	hasoptions = false;
 	autousage = false;
 
-	strcpy( long_opt_prefix , "--" );
+	strcpy_s( long_opt_prefix , "--" );
 
 	if( alloc() == false ){
 		cout << endl << "OPTIONS ERROR : Failed allocating memory" ;
@@ -277,7 +277,7 @@ AnyOption::setCommandLongPrefix( char *_prefix )
 		*( _prefix + MAX_LONG_PREFIX_LENGTH ) = '\0'; 
 	}
 
-	strcpy (long_opt_prefix,  _prefix);
+	strcpy_s (long_opt_prefix,  _prefix);
 }
 
 void
@@ -678,9 +678,9 @@ AnyOption::parsePOSIX( char* arg )
 int
 AnyOption::parseGNU( char *arg )
 {
-	int split_at = 0;
+	size_t split_at = 0;
 	/* if has a '=' sign get value */
-	for( unsigned int i = 0 ; i < strlen(arg) ; i++ ){
+	for( size_t i = 0 ; i < strlen(arg) ; i++ ){
 		if(arg[i] ==  equalsign ){
 			split_at = i ; /* store index */
 			i = strlen(arg); /* get out of loop */
@@ -688,7 +688,7 @@ AnyOption::parseGNU( char *arg )
 	}
 	if( split_at > 0 ){ /* it is an option value pair */
 		char* tmp = (char*) malloc(  (split_at+1)*sizeof(char) );
-		for( int i = 0 ; i < split_at ; i++ )
+		for( size_t i = 0 ; i < split_at ; i++ )
 			tmp[i] = arg[i];
 		tmp[split_at] = '\0';
 
@@ -846,8 +846,9 @@ AnyOption::setValue( const char *option , char *value )
 		return false;
         for( int i = 0 ; i < option_counter ; i++ ){
                 if( strcmp( options[i], option ) == 0 ){
-                        values[ optionindex[i] ] = (char*) malloc((strlen(value)+1)*sizeof(char));
-                        strcpy( values[ optionindex[i] ], value );
+                        size_t length = (strlen(value)+1)*sizeof(char);
+                        values[ optionindex[i] ] = (char*) malloc(length);
+                        strcpy_s( values[ optionindex[i] ], length, value );
 			return true;
 		}
         }
@@ -861,8 +862,9 @@ AnyOption::setFlagOn( const char *option )
 		return false;
         for( int i = 0 ; i < option_counter ; i++ ){
                 if( strcmp( options[i], option ) == 0 ){
-                        values[ optionindex[i] ] = (char*) malloc((strlen(TRUE_FLAG)+1)*sizeof(char));
-                        strcpy( values[ optionindex[i] ]  ,  TRUE_FLAG );
+                        size_t length = (strlen(TRUE_FLAG)+1)*sizeof(char);
+                        values[ optionindex[i] ] = (char*) malloc(length);
+                        strcpy_s( values[ optionindex[i] ], length, TRUE_FLAG );
 			return true;
 		}
         }
@@ -876,8 +878,9 @@ AnyOption::setValue( char option , char *value )
 		return false;
         for( int i = 0 ; i < optchar_counter ; i++ ){
                 if( optionchars[i] == option ){
-                        values[ optcharindex[i] ] = (char*) malloc((strlen(value)+1)*sizeof(char));
-                        strcpy( values[ optcharindex[i] ],  value );
+                        size_t length = (strlen(value)+1)*sizeof(char);
+                        values[ optcharindex[i] ] = (char*) malloc(length);
+                        strcpy_s( values[ optcharindex[i] ], length, value );
 			return true;
 		}
         }
@@ -891,8 +894,9 @@ AnyOption::setFlagOn( char option )
 		return false;
         for( int i = 0 ; i < optchar_counter ; i++ ){
                 if( optionchars[i] == option ){
-                        values[ optcharindex[i] ] = (char*) malloc((strlen(TRUE_FLAG)+1)*sizeof(char));
-			strcpy( values[ optcharindex[i] ] , TRUE_FLAG );
+                        size_t length = (strlen(TRUE_FLAG)+1)*sizeof(char);
+                        values[ optcharindex[i] ] = (char*) malloc(length);
+			strcpy_s( values[ optcharindex[i] ] , length, TRUE_FLAG );
 			return true;
 		}
         }
@@ -945,7 +949,6 @@ AnyOption::readFile()
 char*
 AnyOption::readFile( const char* fname )
 {
-        int length;
         char *buffer;
         ifstream is;
         is.open ( fname , ifstream::in );
@@ -954,7 +957,7 @@ AnyOption::readFile( const char* fname )
                 return NULL;
         }
         is.seekg (0, ios::end);
-        length = is.tellg();
+        size_t length = (size_t)is.tellg();
         is.seekg (0, ios::beg);
         buffer = (char*) malloc(length*sizeof(char));
         is.read (buffer,length);

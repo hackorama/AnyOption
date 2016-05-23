@@ -5,6 +5,7 @@
 #include <fstream>
 #include <stdlib.h>
 #include <string>
+#include <cstring>
 
 #define COMMON_OPT 	1
 #define COMMAND_OPT 	2
@@ -34,6 +35,7 @@ class AnyOption
 
 public: /* the public interface */
 	AnyOption();
+	
 	AnyOption(int maxoptions ); 
 	AnyOption(int maxoptions , int maxcharoptions); 
 	~AnyOption();

@@ -1,18 +1,42 @@
 /*
- * Here is a sample of how to use AnyOption to
- * parse comand line argumnets and an ptions file
+ * Using AnyOption to parse comand line arguments and an options file
  *
- * Create  sample.txt as follows
+ * Compile:
+ *   $ g++ demo.cpp anyoption.cpp -o demo
  *
- *      # sample options file
- *      # this is a comment 
- *      zip  
- *      size  : 42 
- *      title : This is a test title.
+ * Test Command Line Options:
  *
- * Run the sample with any combination of the options
+ *  $ ./ demo
+ *  usage:
  *
- *      a.out -c --zip -s 20 --name foo.jpg argtest1 argtest2 
+ *  -h  --help             Prints this help
+ *  -s  --size <size>      Image Size
+ *  -z  --zip              Compress Image
+ *  -c                     Convert Image
+ *  --name <image_name>    Image Name
+ *
+ *  $ ./demo -c --zip -s 42 --name foo.jpg
+ *  size = 42
+ *  name = foo.jpg
+ *  c = flag set
+ *  zip = flag set
+ *
+ * Test options from a resource file:
+ *
+ *  $ cat options.txt
+ *  # sample options file
+ *  c
+ *  zip
+ *  size  : 42
+ *  name : foo.jpg
+ *  title : FOO
+ *
+ *  $ ./demo -c
+ *  size = 42
+ *  name = foo.jpg
+ *  title = FOO
+ *  c = flag set
+ *
  */
 
 #include "anyoption.h"
@@ -39,14 +63,13 @@ example( int argc, char* argv[] )
         //opt->autoUsagePrint(true); /* print usage for bad options */
 
         /* 3. SET THE USAGE/HELP   */
-        opt->addUsage( "" );
-        opt->addUsage( "Usage: " );
+        opt->addUsage( "usage: " );
         opt->addUsage( "" );
         opt->addUsage( " -h  --help  		Prints this help " );
-        opt->addUsage( " -s  --size 42 	        Image Size " );
+        opt->addUsage( " -s  --size <size>      Image Size " );
         opt->addUsage( " -z  --zip  		Compress Image " );
-        opt->addUsage( " -c   			convert Image " );
-        opt->addUsage( "     --name image.jpg	Image Name " );
+        opt->addUsage( " -c   			Convert Image " );
+        opt->addUsage( " --name <image_name> 	Image Name " );
         opt->addUsage( "" );
 
         /* 4. SET THE OPTION STRINGS/CHARACTERS */
@@ -66,7 +89,8 @@ example( int argc, char* argv[] )
         /* 5. PROCESS THE COMMANDLINE AND RESOURCE FILE */
 
 	/* read options from a  option/resource file with ':' separated opttions or flags, one per line */
-        opt->processFile( "/home/user/.options" );  
+        opt->processFile( "./options.txt" );  
+
 	/* go through the command line and get the options  */
         opt->processCommandArgs( argc, argv );
 

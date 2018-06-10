@@ -47,12 +47,12 @@ public: /* the public interface */
 
   void setCommandPrefixChar(char _prefix);    /* '-' in "-w" */
   void setCommandLongPrefix(char *_prefix);   /* '--' in "--width" */
-  void setFileCommentChar(char _comment);     /* '#' in shellscripts */
+  void setFileCommentChar(char _comment);     /* '#' in shell scripts */
   void setFileDelimiterChar(char _delimiter); /* ':' in "width : 100" */
 
   /*
    * provide the input for the options
-   * like argv[] for commndline and the
+   * like argv[] for commnd line and the
    * option file name  to use;
    */
 
@@ -63,7 +63,7 @@ public: /* the public interface */
    * turn off the POSIX style options
    * this means anything starting with a '-' or "--"
    * will be considered a valid option
-   * which alo means you cannot add a bunch of
+   * which also means you cannot add a bunch of
    * POIX options chars together like "-lr"  for "-l -r"
    *
    */
@@ -85,15 +85,15 @@ public: /* the public interface */
    * or a character ( traditional POSIX style )
    * or both ( --width, -w )
    *
-   * the options can be common to the commandline and
-   * the optionfile, or can belong only to either of
-   * commandline and optionfile
+   * the options can be common to the command line and
+   * the option file, or can belong only to either of
+   * command line and option file
    *
-   * following set methods, handle all the aboove
+   * following set methods, handle all the above
    * cases of options.
    */
 
-  /* options comman to command line and option file */
+  /* options command to command line and option file */
   void setOption(const char *opt_string);
   void setOption(char opt_char);
   void setOption(const char *opt_string, char opt_char);
@@ -101,7 +101,7 @@ public: /* the public interface */
   void setFlag(char opt_char);
   void setFlag(const char *opt_string, char opt_char);
 
-  /* options read from commandline only */
+  /* options read from command line only */
   void setCommandOption(const char *opt_string);
   void setCommandOption(char opt_char);
   void setCommandOption(const char *opt_string, char opt_char);
@@ -118,7 +118,7 @@ public: /* the public interface */
   void setFileFlag(const char *opt_string, char opt_char);
 
   /*
-   * process the options, registerd using
+   * process the options, registered using
    * useCommandArgs() and useFileName();
    */
   void processOptions();
@@ -160,8 +160,8 @@ public: /* the public interface */
   bool hasOptions();
 
 private:                /* the hidden data structure */
-  int argc;             /* commandline arg count  */
-  char **argv;          /* commndline args */
+  int argc;             /* command line arg count  */
+  char **argv;          /* commnd line args */
   const char *filename; /* the option file */
   char *appname;        /* the application name from argv[0] */
 
@@ -189,7 +189,7 @@ private:                /* the hidden data structure */
 
   /* help and usage */
   const char **usage;  /* usage */
-  int max_usage_lines; /* max usage lines reseverd */
+  int max_usage_lines; /* max usage lines reserved */
   int usage_lines;     /* number of usage lines */
 
   bool command_set;   /* if argc/argv were provided */

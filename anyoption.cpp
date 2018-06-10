@@ -4,8 +4,8 @@
  * kishan at hackorama dot com  www.hackorama.com JULY 2001
  *
  * + Acts as a common facade class for reading
- *   commandline options as well as options from
- *   an optionfile with delimited type value pairs
+ *   command line options as well as options from
+ *   an option file with delimited type value pairs
  *
  * + Handles the POSIX style single character options ( -w )
  *   as well as the newer GNU long options ( --width )
@@ -14,7 +14,7 @@
  *   first character based comment lines and type value
  *   pairs with a delimiter , and flags which are not pairs
  *
- *  	# this is a coment
+ *  	# this is a comment
  *  	# next line is an option value pair
  *  	width : 100
  *     	# next line is a flag
@@ -32,7 +32,7 @@
  *   The actual code which does command line parsing
  *   and option file parsing are done in  few methods.
  *   Most of the extra code are for providing a flexible
- *   common public interface to both a resourcefile and
+ *   common public interface to both a resource file
  *   and command line supporting POSIX style and
  *   GNU long option as well as mixing of both.
  *
@@ -40,7 +40,7 @@
  *
  */
 
-/* Updated Auguest 2004
+/* Updated August 2004
  * Fix from  Michael D Peters (mpeters at sandia.gov)
  * to remove static local variables, allowing multiple instantiations
  * of the reader (for using multiple configuration files).  There is
@@ -50,7 +50,7 @@
  * have not bothered tracking it down.
  *
  * Also updated to use modern C++ style headers, rather than
- * depricated iostream.h (it was causing my compiler problems)
+ * deprecated iostream.h (it was causing my compiler problems)
 */
 
 /*
@@ -749,7 +749,7 @@ char *AnyOption::getArgv(int index) {
   return NULL;
 }
 
-/* dotfile sub routines */
+/* option file sub routines */
 
 bool AnyOption::processFile() {
   if (!(valueStoreOK() && FileSet()))
@@ -865,7 +865,7 @@ void AnyOption::processLine(char *theline, int length) {
 }
 
 /*
- * removes trailing and preceeding whitespaces from a string
+ * removes trailing and preceding white spaces from a string
  */
 char *AnyOption::chomp(char *str) {
   while (*str == whitespace)
@@ -897,7 +897,7 @@ void AnyOption::valuePairs(char *type, char *value) {
       }
     }
   }
-  printVerbose("Unknown option in resourcefile : ");
+  printVerbose("Unknown option in resource file : ");
   printVerbose(type);
   printVerbose();
 }
@@ -923,7 +923,7 @@ void AnyOption::justValue(char *type) {
       }
     }
   }
-  printVerbose("Unknown option in resourcefile : ");
+  printVerbose("Unknown option in resource file : ");
   printVerbose(type);
   printVerbose();
 }

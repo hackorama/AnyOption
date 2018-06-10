@@ -964,9 +964,10 @@ AnyOption::readFile( const char* fname )
         is.seekg (0, ios::end);
         size_t length = (size_t)is.tellg();
         is.seekg (0, ios::beg);
-        buffer = (char*) malloc(length*sizeof(char));
+        buffer = (char*) malloc((length + 1)*sizeof(char));
         is.read (buffer,length);
         is.close();
+        buffer[length] = 0;
         return buffer;
 }
 

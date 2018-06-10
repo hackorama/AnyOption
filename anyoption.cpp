@@ -782,7 +782,7 @@ char *AnyOption::readFile(const char *fname) {
   buffer = (char *)malloc((length + 1) * sizeof(char));
   is.read(buffer, length);
   is.close();
-  buffer[length] = 0;
+  buffer[length] = nullterminate;
   return buffer;
 }
 

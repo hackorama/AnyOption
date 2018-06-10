@@ -1,5 +1,5 @@
 /*
- * Using AnyOption to parse comand line arguments and an options file
+ * Using AnyOption to parse command line arguments and an options file
  *
  * Compile:
  *   $ g++ demo.cpp anyoption.cpp -o demo
@@ -88,7 +88,7 @@ example( int argc, char* argv[] )
 
         /* 5. PROCESS THE COMMANDLINE AND RESOURCE FILE */
 
-	/* read options from a  option/resource file with ':' separated opttions or flags, one per line */
+	/* read options from a  option/resource file with ':' separated options or flags, one per line */
         opt->processFile( "./options.txt" );  
 
 	/* go through the command line and get the options  */

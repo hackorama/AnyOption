@@ -169,14 +169,27 @@ bool AnyOption::alloc() {
 }
 
 bool AnyOption::doubleOptStorage() {
+  const char **options_saved = options;
   options = (const char **)realloc(options, ((2 * max_options) + 1) *
                                                 sizeof(const char *));
+  if (options == NULL) {
+    free(options_saved);
+    return false;
+  }
+  int *optiontype_saved = optiontype;
   optiontype =
       (int *)realloc(optiontype, ((2 * max_options) + 1) * sizeof(int));
+  if (optiontype == NULL) {
+    free(optiontype_saved);
+    return false;
+  }
+  int *optionindex_saved = optionindex;
   optionindex =
       (int *)realloc(optionindex, ((2 * max_options) + 1) * sizeof(int));
-  if (options == NULL || optiontype == NULL || optionindex == NULL)
+  if (optionindex == NULL) {
+    free(optionindex_saved);
     return false;
+  }
   /* init new storage */
   for (int i = max_options; i < 2 * max_options; i++) {
     options[i] = NULL;
@@ -188,14 +201,27 @@ bool AnyOption::doubleOptStorage() {
 }
 
 bool AnyOption::doubleCharStorage() {
+  char *optionchars_saved = optionchars;
   optionchars =
       (char *)realloc(optionchars, ((2 * max_char_options) + 1) * sizeof(char));
+  if (optionchars == NULL) {
+    free(optionchars_saved);
+    return false;
+  }
+  int *optchartype_saved = optchartype;
   optchartype =
       (int *)realloc(optchartype, ((2 * max_char_options) + 1) * sizeof(int));
+  if (optchartype == NULL) {
+    free(optchartype_saved);
+    return false;
+  }
+  int *optcharindex_saved = optcharindex;
   optcharindex =
       (int *)realloc(optcharindex, ((2 * max_char_options) + 1) * sizeof(int));
-  if (optionchars == NULL || optchartype == NULL || optcharindex == NULL)
+  if (optcharindex == NULL) {
+    free(optcharindex_saved);
     return false;
+  }
   /* init new storage */
   for (int i = max_char_options; i < 2 * max_char_options; i++) {
     optionchars[i] = '0';
@@ -207,10 +233,13 @@ bool AnyOption::doubleCharStorage() {
 }
 
 bool AnyOption::doubleUsageStorage() {
+  const char **usage_saved = usage;
   usage = (const char **)realloc(usage, ((2 * max_usage_lines) + 1) *
                                             sizeof(const char *));
-  if (usage == NULL)
+  if (usage == NULL) {
+    free(usage_saved);
     return false;
+  }
   for (int i = max_usage_lines; i < 2 * max_usage_lines; i++)
     usage[i] = NULL;
   max_usage_lines = 2 * max_usage_lines;

@@ -2,5 +2,5 @@ language: cpp
 complier:
   - gcc 
 script:
-  - g++ anyoption.cpp demo.cpp 
+  - g++ -Wall -Wextra -Werror anyoption.cpp demo.cpp 
 

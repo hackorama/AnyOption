@@ -168,6 +168,15 @@ bool AnyOption::alloc() {
   return true;
 }
 
+void AnyOption::allocValues(int index, int length) {
+  if (values[index] == NULL) {
+    values[index] = (char *)malloc(length);
+  } else {
+    free(values[index]);
+    values[index] = (char *)malloc(length);
+  }
+}
+
 bool AnyOption::doubleOptStorage() {
   const char **options_saved = options;
   options = (const char **)realloc(options, ((2 * max_options) + 1) *
@@ -719,7 +728,7 @@ bool AnyOption::setValue(const char *option, char *value) {
   for (int i = 0; i < option_counter; i++) {
     if (strcmp(options[i], option) == 0) {
       size_t length = (strlen(value) + 1) * sizeof(char);
-      values[optionindex[i]] = (char *)malloc(length);
+      allocValues(optionindex[i], length);
       strncpy(values[optionindex[i]], value, length);
       return true;
     }
@@ -733,7 +742,7 @@ bool AnyOption::setFlagOn(const char *option) {
   for (int i = 0; i < option_counter; i++) {
     if (strcmp(options[i], option) == 0) {
       size_t length = (strlen(TRUE_FLAG) + 1) * sizeof(char);
-      values[optionindex[i]] = (char *)malloc(length);
+      allocValues(optionindex[i], length);
       strncpy(values[optionindex[i]], TRUE_FLAG, length);
       return true;
     }
@@ -747,7 +756,7 @@ bool AnyOption::setValue(char option, char *value) {
   for (int i = 0; i < optchar_counter; i++) {
     if (optionchars[i] == option) {
       size_t length = (strlen(value) + 1) * sizeof(char);
-      values[optcharindex[i]] = (char *)malloc(length);
+      allocValues(optcharindex[i], length);
       strncpy(values[optcharindex[i]], value, length);
       return true;
     }
@@ -761,7 +770,7 @@ bool AnyOption::setFlagOn(char option) {
   for (int i = 0; i < optchar_counter; i++) {
     if (optionchars[i] == option) {
       size_t length = (strlen(TRUE_FLAG) + 1) * sizeof(char);
-      values[optcharindex[i]] = (char *)malloc(length);
+      allocValues(optcharindex[i], length);
       strncpy(values[optcharindex[i]], TRUE_FLAG, length);
       return true;
     }

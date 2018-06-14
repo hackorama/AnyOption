@@ -1,0 +1,6 @@
+language: cpp 
+complier:
+  - gcc 
+script:
+  - g++ anyoption.cpp demo.cpp 
+

@@ -1,6 +1,8 @@
+# AnyOption
+
 [![Build Status](https://travis-ci.org/hackorama/AnyOption.svg?branch=master)](https://travis-ci.org/hackorama/AnyOption)
 
-http://www.hackorama.com/anyoption/
+[http://www.hackorama.com/anyoption/](http://www.hackorama.com/anyoption/)
 
 AnyOption is a C++ class for easy parsing of complex commandline options. It also parses options from a rsourcefile in option value pair format. 
 
@@ -13,5 +15,7 @@ An option which expects a value is considered as an option value pair, while opt
 Please read the header file for the documented public interface, and demo.cpp for an example of how easy it is to use AnyOption. 
 
 August 2004, added bug-fixes, and updates send by Michael Peters of Sandia Lab. 
+
 September 2006, fix from Boyan Asenov for a bug in mixing up option type indexes. 
+
 July 2011, fix from Min KJ and Costantino G for string allocation. 

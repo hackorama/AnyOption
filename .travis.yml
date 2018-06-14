@@ -1,6 +1,20 @@
 language: cpp 
+os:
+  - linux
+  - osx
 complier:
   - gcc 
+addons:
+  apt:
+    packages:
+      - valgrind
+      - cppcheck
+      - make
+      - cmake
+      - doxygen
+      - help2man
 script:
-  - g++ -Wall -Wextra -Werror anyoption.cpp demo.cpp 
+  - g++ -Wall -Wextra -Werror anyoption.cpp demo.cpp -o demo
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then valgrind --error-exitcode=1  --leak-check=full ./demo  ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cppcheck *.cpp *.h ; fi
 

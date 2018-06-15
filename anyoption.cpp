@@ -96,8 +96,6 @@ void AnyOption::init(int maxopt, int maxcharopt) {
   values = NULL;
   g_value_counter = 0;
   mem_allocated = false;
-  command_set = false;
-  file_set = false;
   opt_prefix_char = '-';
   file_delimiter_char = ':';
   file_comment_char = '#';

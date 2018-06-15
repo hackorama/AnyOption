@@ -155,9 +155,9 @@ public: /* the public interface */
   /*
    * get the argument count and arguments sans the options
    */
-  int getArgc();
-  char *getArgv(int index);
-  bool hasOptions();
+  int getArgc() const;
+  char *getArgv(int index) const;
+  bool hasOptions() const;
 
 private:                /* the hidden data structure */
   int argc;             /* command line arg count  */
@@ -237,13 +237,13 @@ private: /* the hidden utils */
 
   void addOption(const char *option, int type);
   void addOption(char optchar, int type);
-  void addOptionError(const char *opt);
-  void addOptionError(char opt);
+  void addOptionError(const char *opt) const;
+  void addOptionError(char opt) const;
   bool findFlag(char *value);
   void addUsageError(const char *line);
-  bool CommandSet();
-  bool FileSet();
-  bool POSIX();
+  bool CommandSet() const;
+  bool FileSet() const;
+  bool POSIX() const;
 
   char parsePOSIX(char *arg);
   int parseGNU(char *arg);
@@ -259,10 +259,10 @@ private: /* the hidden utils */
   void valuePairs(char *type, char *value);
   void justValue(char *value);
 
-  void printVerbose(const char *msg);
-  void printVerbose(char *msg);
-  void printVerbose(char ch);
-  void printVerbose();
+  void printVerbose(const char *msg) const;
+  void printVerbose(char *msg) const;
+  void printVerbose(char ch) const;
+  void printVerbose() const;
 };
 
 #endif /* ! _ANYOPTION_H */

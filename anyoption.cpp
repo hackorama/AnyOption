@@ -292,36 +292,36 @@ void AnyOption::setFileDelimiterChar(char _delimiter) {
   file_comment_char = _delimiter;
 }
 
-bool AnyOption::CommandSet() { return (command_set); }
+bool AnyOption::CommandSet() const { return (command_set); }
 
-bool AnyOption::FileSet() { return (file_set); }
+bool AnyOption::FileSet() const { return (file_set); }
 
 void AnyOption::noPOSIX() { posix_style = false; }
 
-bool AnyOption::POSIX() { return posix_style; }
+bool AnyOption::POSIX() const { return posix_style; }
 
 void AnyOption::setVerbose() { verbose = true; }
 
-void AnyOption::printVerbose() {
+void AnyOption::printVerbose() const {
   if (verbose)
     cout << endl;
 }
-void AnyOption::printVerbose(const char *msg) {
+void AnyOption::printVerbose(const char *msg) const {
   if (verbose)
     cout << msg;
 }
 
-void AnyOption::printVerbose(char *msg) {
+void AnyOption::printVerbose(char *msg) const {
   if (verbose)
     cout << msg;
 }
 
-void AnyOption::printVerbose(char ch) {
+void AnyOption::printVerbose(char ch) const {
   if (verbose)
     cout << ch;
 }
 
-bool AnyOption::hasOptions() { return hasoptions; }
+bool AnyOption::hasOptions() const { return hasoptions; }
 
 void AnyOption::autoUsagePrint(bool _autousage) { autousage = _autousage; }
 
@@ -473,7 +473,7 @@ void AnyOption::addOption(char opt, int type) {
   optchar_counter++;
 }
 
-void AnyOption::addOptionError(const char *opt) {
+void AnyOption::addOptionError(const char *opt) const {
   cout << endl;
   cout << "OPTIONS ERROR : Failed allocating extra memory " << endl;
   cout << "While adding the option : \"" << opt << "\"" << endl;
@@ -482,7 +482,7 @@ void AnyOption::addOptionError(const char *opt) {
   exit(0);
 }
 
-void AnyOption::addOptionError(char opt) {
+void AnyOption::addOptionError(char opt) const {
   cout << endl;
   cout << "OPTIONS ERROR : Failed allocating extra memory " << endl;
   cout << "While adding the option: \"" << opt << "\"" << endl;
@@ -775,9 +775,9 @@ bool AnyOption::setFlagOn(char option) {
   return false;
 }
 
-int AnyOption::getArgc() { return new_argc; }
+int AnyOption::getArgc() const { return new_argc; }
 
-char *AnyOption::getArgv(int index) {
+char *AnyOption::getArgv(int index) const {
   if (index < new_argc) {
     return (argv[new_argv[index]]);
   }

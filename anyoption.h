@@ -35,8 +35,8 @@ class AnyOption {
 public: /* the public interface */
   AnyOption();
 
-  AnyOption(int maxoptions);
-  AnyOption(int maxoptions, int maxcharoptions);
+  explicit AnyOption(int maxoptions);
+  explicit AnyOption(int maxoptions, int maxcharoptions);
   ~AnyOption();
 
   /*

@@ -652,10 +652,9 @@ bool AnyOption::matchChar(char c) {
 }
 
 bool AnyOption::valueStoreOK() {
-  int size = 0;
   if (!set) {
     if (g_value_counter > 0) {
-      size = g_value_counter * sizeof(char *);
+      const int size = g_value_counter * sizeof(char *);
       values = (char **)malloc(size);
       for (int i = 0; i < g_value_counter; i++)
         values[i] = NULL;
@@ -878,7 +877,6 @@ bool AnyOption::consumeFile(char *buffer) {
  */
 
 void AnyOption::processLine(char *theline, int length) {
-  bool found = false;
   char *pline = (char *)malloc((length + 1) * sizeof(char));
   for (int i = 0; i < length; i++)
     pline[i] = *(theline++);
@@ -887,6 +885,7 @@ void AnyOption::processLine(char *theline, int length) {
   if (*cursor == delimiter || *(cursor + length - 1) == delimiter) {
     justValue(pline); /* line with start/end delimiter */
   } else {
+    bool found = false;
     for (int i = 1; i < length - 1 && !found; i++) { /* delimiter */
       if (*cursor == delimiter) {
         *(cursor - 1) = nullterminate; /* two strings */

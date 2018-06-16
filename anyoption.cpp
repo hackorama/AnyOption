@@ -96,8 +96,6 @@ void AnyOption::init(int maxopt, int maxcharopt) {
   values = NULL;
   g_value_counter = 0;
   mem_allocated = false;
-  command_set = false;
-  file_set = false;
   opt_prefix_char = '-';
   file_delimiter_char = ':';
   file_comment_char = '#';
@@ -294,36 +292,36 @@ void AnyOption::setFileDelimiterChar(char _delimiter) {
   file_comment_char = _delimiter;
 }
 
-bool AnyOption::CommandSet() { return (command_set); }
+bool AnyOption::CommandSet() const { return (command_set); }
 
-bool AnyOption::FileSet() { return (file_set); }
+bool AnyOption::FileSet() const { return (file_set); }
 
 void AnyOption::noPOSIX() { posix_style = false; }
 
-bool AnyOption::POSIX() { return posix_style; }
+bool AnyOption::POSIX() const { return posix_style; }
 
 void AnyOption::setVerbose() { verbose = true; }
 
-void AnyOption::printVerbose() {
+void AnyOption::printVerbose() const {
   if (verbose)
     cout << endl;
 }
-void AnyOption::printVerbose(const char *msg) {
+void AnyOption::printVerbose(const char *msg) const {
   if (verbose)
     cout << msg;
 }
 
-void AnyOption::printVerbose(char *msg) {
+void AnyOption::printVerbose(char *msg) const {
   if (verbose)
     cout << msg;
 }
 
-void AnyOption::printVerbose(char ch) {
+void AnyOption::printVerbose(char ch) const {
   if (verbose)
     cout << ch;
 }
 
-bool AnyOption::hasOptions() { return hasoptions; }
+bool AnyOption::hasOptions() const { return hasoptions; }
 
 void AnyOption::autoUsagePrint(bool _autousage) { autousage = _autousage; }
 
@@ -475,7 +473,7 @@ void AnyOption::addOption(char opt, int type) {
   optchar_counter++;
 }
 
-void AnyOption::addOptionError(const char *opt) {
+void AnyOption::addOptionError(const char *opt) const {
   cout << endl;
   cout << "OPTIONS ERROR : Failed allocating extra memory " << endl;
   cout << "While adding the option : \"" << opt << "\"" << endl;
@@ -484,7 +482,7 @@ void AnyOption::addOptionError(const char *opt) {
   exit(0);
 }
 
-void AnyOption::addOptionError(char opt) {
+void AnyOption::addOptionError(char opt) const {
   cout << endl;
   cout << "OPTIONS ERROR : Failed allocating extra memory " << endl;
   cout << "While adding the option: \"" << opt << "\"" << endl;
@@ -652,10 +650,9 @@ bool AnyOption::matchChar(char c) {
 }
 
 bool AnyOption::valueStoreOK() {
-  int size = 0;
   if (!set) {
     if (g_value_counter > 0) {
-      size = g_value_counter * sizeof(char *);
+      const int size = g_value_counter * sizeof(char *);
       values = (char **)malloc(size);
       for (int i = 0; i < g_value_counter; i++)
         values[i] = NULL;
@@ -778,9 +775,9 @@ bool AnyOption::setFlagOn(char option) {
   return false;
 }
 
-int AnyOption::getArgc() { return new_argc; }
+int AnyOption::getArgc() const { return new_argc; }
 
-char *AnyOption::getArgv(int index) {
+char *AnyOption::getArgv(int index) const {
   if (index < new_argc) {
     return (argv[new_argv[index]]);
   }
@@ -878,7 +875,6 @@ bool AnyOption::consumeFile(char *buffer) {
  */
 
 void AnyOption::processLine(char *theline, int length) {
-  bool found = false;
   char *pline = (char *)malloc((length + 1) * sizeof(char));
   for (int i = 0; i < length; i++)
     pline[i] = *(theline++);
@@ -887,6 +883,7 @@ void AnyOption::processLine(char *theline, int length) {
   if (*cursor == delimiter || *(cursor + length - 1) == delimiter) {
     justValue(pline); /* line with start/end delimiter */
   } else {
+    bool found = false;
     for (int i = 1; i < length - 1 && !found; i++) { /* delimiter */
       if (*cursor == delimiter) {
         *(cursor - 1) = nullterminate; /* two strings */

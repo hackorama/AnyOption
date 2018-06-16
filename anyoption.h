@@ -223,7 +223,7 @@ private: /* the hidden utils */
   void init();
   void init(int maxopt, int maxcharopt);
   bool alloc();
-  void allocValues(int index, int length);
+  void allocValues(int index, size_t length);
   void cleanup();
   bool valueStoreOK();
 

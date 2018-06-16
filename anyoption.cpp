@@ -168,7 +168,7 @@ bool AnyOption::alloc() {
   return true;
 }
 
-void AnyOption::allocValues(int index, int length) {
+void AnyOption::allocValues(int index, size_t length) {
   if (values[index] == NULL) {
     values[index] = (char *)malloc(length);
   } else {

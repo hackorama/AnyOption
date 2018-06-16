@@ -1,5 +1,11 @@
 #define CATCH_CONFIG_MAIN
-
+/*
+ * To compile get the latest version of catch2 from
+ * https://github.com/catchorg/Catch2
+ * $ wget https://github.com/catchorg/Catch2/releases/download/v2.2.3/catch.hpp
+ * $ g++ -g -std=c++11 -Wall -Wextra -Werror test.cpp anyoption.cpp -o test
+ *
+ */
 #include "anyoption.h"
 #include "catch.hpp"
 

@@ -11,7 +11,6 @@
 
 #include <stdarg.h>
 
-
 char **buildArgv(int size, ...) {
   va_list args;
   char **argv = (char **)malloc(size * sizeof(char *));
@@ -33,9 +32,9 @@ void clearArgv(int size, char **_argv) {
 
 TEST_CASE("Test long options") {
   const int argc = 5;
-  char **argv =
-      buildArgv(argc, "test", "--long_flag_provided", "--long_option_with_value",
-            "long_option_value", "--long_option_without_value");
+  char **argv = buildArgv(argc, "test", "--long_flag_provided",
+                          "--long_option_with_value", "long_option_value",
+                          "--long_option_without_value");
   AnyOption *opt = new AnyOption();
 
   opt->setFlag("long_flag_provided");

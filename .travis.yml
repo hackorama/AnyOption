@@ -14,7 +14,11 @@ addons:
       - doxygen
       - help2man
 script:
-  - g++ -Wall -Wextra -Werror anyoption.cpp -g -o0 demo.cpp -o demo
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then valgrind --error-exitcode=1 --leak-check=full ./demo ; fi
+  - g++ -g -Wall -Wextra -Werror anyoption.cpp demo.cpp -o demo
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./demo ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cppcheck --error-exitcode=1 *.cpp *.h ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget -q https://github.com/catchorg/Catch2/releases/download/v2.2.3/catch.hpp
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then g++ -g -o0 -std=c++11 -Wall -Wextra -Werror test.cpp anyoption.cpp -o test
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./test
+
 

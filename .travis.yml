@@ -14,7 +14,7 @@ addons:
       - doxygen
       - help2man
 script:
-  - g++ -Wall -Wextra -Werror anyoption.cpp demo.cpp -o demo
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then valgrind --error-exitcode=1  --leak-check=full ./demo  ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cppcheck *.cpp *.h ; fi
+  - g++ -Wall -Wextra -Werror anyoption.cpp -g -o0 demo.cpp -o demo
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then valgrind --error-exitcode=1 --leak-check=full ./demo ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cppcheck --error-exitcode=1 *.cpp *.h ; fi
 

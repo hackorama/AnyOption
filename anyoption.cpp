@@ -795,8 +795,8 @@ bool AnyOption::processFile() {
   return (consumeFile(readFile()));
 }
 
-bool AnyOption::processFile(const char *filename) {
-  useFiileName(filename);
+bool AnyOption::processFile(const char *_filename) {
+  useFiileName(_filename);
   return (processFile());
 }
 

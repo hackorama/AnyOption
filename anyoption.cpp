@@ -109,6 +109,8 @@ void AnyOption::init(int maxopt, int maxcharopt) {
   once = true;
   hasoptions = false;
   autousage = false;
+  print_usage = false; 
+  print_help = false; 
 
   strcpy(long_opt_prefix, "--");
 

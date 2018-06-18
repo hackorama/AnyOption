@@ -1,0 +1,8 @@
+version: 1.3.{build}
+image: Visual Studio 2017
+platform: x64
+build_script:
+  - curl -fsSL -o catch.hpp https://github.com/catchorg/Catch2/releases/download/v2.2.3/catch.hpp
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - cmd: cl /EHsc /W4 test.cpp anyoption.cpp
+  - cmd: test.exe

@@ -1,6 +1,8 @@
 # AnyOption
 
 [![Build Status](https://travis-ci.org/hackorama/AnyOption.svg?branch=master)](https://travis-ci.org/hackorama/AnyOption)
+[![Build status](https://ci.appveyor.com/api/projects/status/8e6ugxoc9nju0005?svg=true)](https://ci.appveyor.com/project/hackorama/anyoption)
+
 
 [http://www.hackorama.com/anyoption/](http://www.hackorama.com/anyoption/)
 

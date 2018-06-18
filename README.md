@@ -1,8 +1,6 @@
 # AnyOption
 
-[![Linux, OSX Build Status](https://travis-ci.org/hackorama/AnyOption.svg?branch=master)](https://travis-ci.org/hackorama/AnyOption)
-[![Windows Build status](https://ci.appveyor.com/api/projects/status/8e6ugxoc9nju0005?svg=true)](https://ci.appveyor.com/project/hackorama/anyoption)
-[![codecov.io](https://codecov.io/github/hackorama/AnyOption/coverage.svg?branch=master)](https://codecov.io/github/hackorama/AnyOption?branch=master)
+| Linux OSX [![Linux, OSX Build Status](https://travis-ci.org/hackorama/AnyOption.svg?branch=master)](https://travis-ci.org/hackorama/AnyOption) | Windows [![Windows Build status](https://ci.appveyor.com/api/projects/status/8e6ugxoc9nju0005?svg=true)](https://ci.appveyor.com/project/hackorama/anyoption) | [![codecov.io](https://codecov.io/github/hackorama/AnyOption/coverage.svg?branch=master)](https://codecov.io/github/hackorama/AnyOption?branch=master) |
 
 
 [http://www.hackorama.com/anyoption/](http://www.hackorama.com/anyoption/)

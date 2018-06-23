@@ -15,6 +15,7 @@ lcov --remove coverage.info 'catch.hpp' '/usr/*' --output-file coverage.info
 lcov --list coverage.info
 # clean
 rm test
+rm test.options
 rm catch.hpp
 rm coverage.info
 rm *.gcda *.gcno

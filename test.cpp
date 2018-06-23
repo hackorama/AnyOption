@@ -11,6 +11,8 @@
 
 #include <stdarg.h>
 
+using namespace Catch::Matchers;
+
 char **buildArgv(int size, ...) {
   va_list args;
   char **argv = (char **)malloc(size * sizeof(char *));
@@ -32,27 +34,51 @@ void clearArgv(int size, char **_argv) {
 
 TEST_CASE("Test long options") {
   const int argc = 5;
-  char **argv = buildArgv(argc, "test", "--long_flag_provided",
-                          "--long_option_with_value", "long_option_value",
-                          "--long_option_without_value");
+  char **argv =
+      buildArgv(argc, "test", "--long_flag_in_args", "--long_option_with_value",
+                "long_option_value", "--long_option_with_out_value");
   AnyOption *opt = new AnyOption();
 
-  opt->setFlag("long_flag_provided");
-  opt->setFlag("long_flag_not_provided");
+  opt->setFlag("long_flag_in_args");
+  opt->setFlag("long_flag_not_in_args");
   opt->setOption("long_option_with_value");
-  opt->setOption("long_option_without-value");
-  opt->setOption("long_option_not_provided");
+  opt->setOption("long_option_with_out_value");
+  opt->setOption("long_option_not_in_args");
 
   opt->processCommandArgs(argc, argv);
 
-  REQUIRE(opt->getFlag("long_flag_provided") == true);
-  REQUIRE(opt->getValue("long_option_without_value") == NULL);
+  REQUIRE(opt->getFlag("long_flag_in_args") == true);
+  REQUIRE(opt->getFlag("long_flag_not_in_args") == false);
 
-  REQUIRE(opt->getFlag("long_flag_not_provided") == false);
-  REQUIRE(opt->getValue("long_option_not_provided") == NULL);
+  REQUIRE_THAT(opt->getValue("long_option_with_value"),
+               Equals("long_option_value"));
+  REQUIRE(opt->getValue("long_option_with_out_value") == NULL);
+  REQUIRE(opt->getValue("long_option_not_in_args") == NULL);
 
-  REQUIRE(opt->getFlag("long_flag_not_set") == false);
-  REQUIRE(opt->getValue("long_option_not_set") == NULL);
+  delete opt;
+  clearArgv(argc, argv);
+}
+
+TEST_CASE("Test short options") {
+  const int argc = 5;
+  char **argv = buildArgv(argc, "test", "-x", "-a", "a_value", "-b");
+  AnyOption *opt = new AnyOption();
+
+  opt->setFlag('x'); // flag set in args
+  opt->setFlag('y'); // flag not set in args
+
+  opt->setOption('a'); // option with value in args
+  opt->setOption('b'); // option with out value in args
+  opt->setOption('c'); // option not in args
+
+  opt->processCommandArgs(argc, argv);
+
+  REQUIRE(opt->getFlag('x') == true);
+  REQUIRE(opt->getFlag('y') == false);
+
+  REQUIRE_THAT(opt->getValue('a'), Equals("a_value"));
+  REQUIRE(opt->getValue('b') == NULL);
+  REQUIRE(opt->getValue('c') == NULL);
 
   delete opt;
   clearArgv(argc, argv);

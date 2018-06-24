@@ -270,3 +270,19 @@ TEST_CASE("Test usage") {
 
   delete opt;
 }
+
+TEST_CASE("Test util set functions") {
+
+  AnyOption *opt = new AnyOption();
+
+  opt->setCommandPrefixChar('=');
+  opt->setCommandLongPrefix("++");
+  opt->setCommandLongPrefix(
+      "##---"); // try more than MAX_LONG_PREFIX_LENGTH of 2
+  opt->setFileCommentChar('.');
+  opt->setFileDelimiterChar('=');
+  opt->noPOSIX();
+  opt->setVerbose();
+
+  delete opt;
+}

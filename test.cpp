@@ -46,6 +46,7 @@ TEST_CASE("Test long options") {
   char **argv =
       buildArgv(argc, "test", "--long_flag_in_args", "--long_option_with_value",
                 "long_option_value", "--long_option_with_out_value");
+
   AnyOption *opt = new AnyOption();
 
   opt->setFlag("long_flag_in_args");
@@ -73,6 +74,7 @@ TEST_CASE("Test long options") {
 TEST_CASE("Test short options") {
   const int argc = 5;
   char **argv = buildArgv(argc, "test", "-x", "-a", "a_value", "-b");
+
   AnyOption *opt = new AnyOption();
 
   opt->setFlag('x'); // flag set in args
@@ -98,10 +100,10 @@ TEST_CASE("Test short options") {
 }
 
 TEST_CASE("Test file options") {
-  writeOptions("x\nlong_flag\na : a_value\nlong_option : long_option_value\n");
-  AnyOption *opt = new AnyOption();
 
-  opt->useFiileName("test.options");
+  writeOptions("x\nlong_flag\na : a_value\nlong_option : long_option_value\n");
+
+  AnyOption *opt = new AnyOption();
 
   opt->setFlag('x');                 // short flag set in file
   opt->setFlag('y');                 // short flag not set in file
@@ -113,6 +115,7 @@ TEST_CASE("Test file options") {
   opt->setOption("long_option");             // long option with value in file
   opt->setOption("long_option_not_in_file"); // long option not file
 
+  opt->useFiileName("test.options");
   opt->processFile();
 
   REQUIRE(opt->getFlag('x') == true);
@@ -126,6 +129,94 @@ TEST_CASE("Test file options") {
   REQUIRE(opt->getValue('c') == NULL); // not defined
   REQUIRE_THAT(opt->getValue("long_option"), Equals("long_option_value"));
   REQUIRE(opt->getValue("not_defined") == NULL);
+
+  delete opt;
+}
+
+TEST_CASE("Test set variations for short option") {
+
+  const int argc = 7;
+  char **argv =
+      buildArgv(argc, "test", "-x", "-y", "-a", "a_value", "-b", "b_value");
+
+  AnyOption *opt = new AnyOption();
+
+  opt->setCommandFlag('x');
+  opt->setCommandOption('a');
+  opt->setFileFlag('y');
+  opt->setFileOption('b');
+
+  opt->processCommandArgs(argc, argv);
+
+  REQUIRE(opt->getFlag('x') == true);
+  REQUIRE(opt->getFlag('y') == false); // should not match even if set in args
+
+  REQUIRE_THAT(opt->getValue('a'), Equals("a_value"));
+  REQUIRE(opt->getValue('b') == NULL); // should not match even if set in args
+
+  delete opt;
+  clearArgv(argc, argv);
+}
+
+TEST_CASE("Test option storage allocation") {
+
+  AnyOption *opt = new AnyOption();
+
+  opt->setOption("option_1");
+  opt->setOption("option_2");
+  opt->setOption("option_3");
+  opt->setOption("option_4");
+  opt->setOption("option_5");
+  opt->setOption("option_6");
+  opt->setOption("option_7");
+  opt->setOption("option_8");
+  opt->setOption("option_9");
+  opt->setOption("option_10");
+  opt->setOption("option_11"); // exceed DEFAULT_MAXOPTS of 10
+
+  delete opt;
+}
+
+TEST_CASE("Test option storage allocation for char options") {
+
+  AnyOption *opt = new AnyOption();
+
+  opt->setOption('1');
+  opt->setOption('2');
+  opt->setOption('3');
+  opt->setOption('4');
+  opt->setOption('5');
+  opt->setOption('6');
+  opt->setOption('7');
+  opt->setOption('8');
+  opt->setOption('9');
+  opt->setOption('a');
+  opt->setOption('b'); // exceed DEFAULT_MAXOPTS of 10
+
+  delete opt;
+}
+
+TEST_CASE("Test usage storage allocation") {
+
+  AnyOption *opt = new AnyOption();
+
+  opt->addUsage("line 1");
+  opt->addUsage("line 2");
+  opt->addUsage("line 3");
+  opt->addUsage("line 4"); // exceed DEFAULT_MAXUSAGE of 3
+
+  delete opt;
+}
+
+TEST_CASE("Test usage") {
+
+  AnyOption *opt = new AnyOption();
+
+  opt->addUsage("line 1");
+  opt->addUsage("line 2");
+  opt->addUsage("line 3");
+  opt->printUsage();
+  opt->printAutoUsage();
 
   delete opt;
 }

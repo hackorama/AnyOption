@@ -278,12 +278,10 @@ void AnyOption::setCommandPrefixChar(char _prefix) {
   opt_prefix_char = _prefix;
 }
 
-void AnyOption::setCommandLongPrefix(char *_prefix) {
-  if (strlen(_prefix) > MAX_LONG_PREFIX_LENGTH) {
-    *(_prefix + MAX_LONG_PREFIX_LENGTH) = '\0';
-  }
-
-  strcpy(long_opt_prefix, _prefix);
+void AnyOption::setCommandLongPrefix(const char *_prefix) {
+  (strlen(_prefix) > MAX_LONG_PREFIX_LENGTH)
+      ? strncpy(long_opt_prefix, _prefix, MAX_LONG_PREFIX_LENGTH)
+      : strcpy(long_opt_prefix, _prefix);
 }
 
 void AnyOption::setFileCommentChar(char _comment) {

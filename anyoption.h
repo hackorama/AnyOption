@@ -50,7 +50,7 @@ public: /* the public interface */
    */
 
   void setCommandPrefixChar(char _prefix);    /* '-' in "-w" */
-  void setCommandLongPrefix(char *_prefix);   /* '--' in "--width" */
+  void setCommandLongPrefix(const char *_prefix); /* '--' in "--width" */
   void setFileCommentChar(char _comment);     /* '#' in shell scripts */
   void setFileDelimiterChar(char _delimiter); /* ':' in "width : 100" */
 

@@ -99,6 +99,28 @@ TEST_CASE("Test short options") {
   clearArgv(argc, argv);
 }
 
+TEST_CASE("Test long and short options with short provided") {
+
+  const int argc = 4;
+  char **argv = buildArgv(argc, "test", "-a", "-b", "b_value");
+
+  AnyOption *opt = new AnyOption();
+
+  opt->setFlag("a_long", 'a'); 
+  opt->setOption("b_long", 'b');
+
+  opt->processCommandArgs(argc, argv);
+
+  REQUIRE(opt->getFlag('a') == true);
+  REQUIRE(opt->getFlag("a_long") == true);
+  REQUIRE_THAT(opt->getValue('b'), Equals("b_value"));
+  REQUIRE_THAT(opt->getValue("b_long"), Equals("b_value"));
+
+  delete opt;
+  clearArgv(argc, argv);
+}
+
+
 TEST_CASE("Test file options") {
 
   writeOptions("x\nlong_flag\na : a_value\nlong_option : long_option_value\n");
@@ -131,6 +153,31 @@ TEST_CASE("Test file options") {
   REQUIRE(opt->getValue("not_defined") == NULL);
 
   delete opt;
+}
+
+TEST_CASE("Test set variations for long option") {
+
+  const int argc = 7;
+  char **argv =
+      buildArgv(argc, "test", "--long_flag_set", "--long_flag_not_set", "--long_option_set", "value_set", "--long_option_not_set", "value_not_set");
+
+  AnyOption *opt = new AnyOption();
+
+  opt->setCommandFlag("long_flag_set");
+  opt->setCommandOption("long_option_set");
+  opt->setFileFlag("long_flag_not_set");
+  opt->setFileOption("long_option_not_set");
+
+  opt->processCommandArgs(argc, argv);
+
+  REQUIRE(opt->getFlag("long_flag_set") == true);
+  REQUIRE(opt->getFlag("long_flag_not_set") == false); // should not match even if set in args
+
+  REQUIRE_THAT(opt->getValue("long_option_set"), Equals("value_set"));
+  REQUIRE(opt->getValue("long_option_not_set") == NULL); // should not match even if set in args
+
+  delete opt;
+  clearArgv(argc, argv);
 }
 
 TEST_CASE("Test set variations for short option") {

@@ -792,7 +792,7 @@ char *AnyOption::getArgv(int index) const {
 bool AnyOption::processFile() {
   if (!(valueStoreOK() && FileSet()))
     return false;
-  return (consumeFile(readFile()));
+  return hasoptions = (consumeFile(readFile()));
 }
 
 bool AnyOption::processFile(const char *_filename) {

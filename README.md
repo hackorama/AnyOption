@@ -7,7 +7,7 @@
 
 [http://www.hackorama.com/anyoption/](http://www.hackorama.com/anyoption/)
 
-AnyOption is a C++ class for easy parsing of complex commandline options. It also parses options from a rsourcefile in option value pair format. 
+AnyOption is a C++ class for easy parsing of complex commandline options. It also parses options from a resource file in option value pair format. 
 
 AnyOption implements the traditional POSIX style character options ( -n ) as well as the newer GNU style long options ( --name ). Or you can use a simpler long option version ( -name ) by asking to ignore the POSIX style options. 
 

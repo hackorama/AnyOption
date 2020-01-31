@@ -8,7 +8,7 @@
 
 cppcheck --error-exitcode=1 --enable=warning,performance,information,style *.cpp *.h
 wget -q https://github.com/catchorg/Catch2/releases/download/v2.2.3/catch.hpp
-g++ -g -o0 -coverage -std=c++11 -Wall -Wextra -Werror test.cpp anyoption.cpp -o test
+g++ -g -o0 -coverage -std=c++11 -Wall -Wextra -Werror tests/test.cpp src/anyoption.cpp -o test
 valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./test
 lcov --directory . --capture --output-file coverage.info
 lcov --remove coverage.info 'catch.hpp' '/usr/*' --output-file coverage.info

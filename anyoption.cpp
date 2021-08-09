@@ -81,19 +81,19 @@ void AnyOption::init(unsigned int maxopt, unsigned int maxcharopt) {
   max_usage_lines = DEFAULT_MAXUSAGE;
   usage_lines = 0;
   argc = 0;
-  argv = NULL;
+  argv = nullptr;
   posix_style = true;
   verbose = false;
-  filename = NULL;
-  appname = NULL;
+  filename = nullptr;
+  appname = nullptr;
   option_counter = 0;
   optchar_counter = 0;
-  new_argv = NULL;
+  new_argv = nullptr;
   new_argc = 0;
   max_legal_args = 0;
   command_set = false;
   file_set = false;
-  values = NULL;
+  values = nullptr;
   g_value_counter = 0;
   mem_allocated = false;
   opt_prefix_char = '-';
@@ -133,19 +133,19 @@ bool AnyOption::alloc() {
   options = (const char **)malloc(size);
   optiontype = (OptionType *)malloc((max_options + 1) * sizeof(OptionType));
   optionindex = (int *)malloc((max_options + 1) * sizeof(int));
-  if (options == NULL || optiontype == NULL || optionindex == NULL)
+  if (options == nullptr || optiontype == nullptr || optionindex == nullptr)
     return false;
   else
     mem_allocated = true;
   for (i = 0; i < max_options; i++) {
-    options[i] = NULL;
+    options[i] = nullptr;
     optiontype[i] = INVALID_OPT;
     optionindex[i] = -1;
   }
   optionchars = (char *)malloc((max_char_options + 1) * sizeof(char));
   optchartype = (OptionType *)malloc((max_char_options + 1) * sizeof(OptionType));
   optcharindex = (int *)malloc((max_char_options + 1) * sizeof(int));
-  if (optionchars == NULL || optchartype == NULL || optcharindex == NULL) {
+  if (optionchars == nullptr || optchartype == nullptr || optcharindex == nullptr) {
     mem_allocated = false;
     return false;
   }
@@ -158,18 +158,18 @@ bool AnyOption::alloc() {
   size = (max_usage_lines + 1) * sizeof(const char *);
   usage = (const char **)malloc(size);
 
-  if (usage == NULL) {
+  if (usage == nullptr) {
     mem_allocated = false;
     return false;
   }
   for (i = 0; i < max_usage_lines; i++)
-    usage[i] = NULL;
+    usage[i] = nullptr;
 
   return true;
 }
 
 void AnyOption::allocValues(int index, size_t length) {
-  if (values[index] == NULL) {
+  if (values[index] == nullptr) {
     values[index] = new char [length];
   } else {
     delete[] values[index];
@@ -181,27 +181,27 @@ bool AnyOption::doubleOptStorage() {
   const char **options_saved = options;
   options = (const char **)realloc(options, ((2 * max_options) + 1) *
                                                 sizeof(const char *));
-  if (options == NULL) {
+  if (options == nullptr) {
     free(options_saved);
     return false;
   }
   OptionType *optiontype_saved = optiontype;
   optiontype =
       (OptionType *)realloc(optiontype, ((2 * max_options) + 1) * sizeof(OptionType));
-  if (optiontype == NULL) {
+  if (optiontype == nullptr) {
     free(optiontype_saved);
     return false;
   }
   int *optionindex_saved = optionindex;
   optionindex =
       (int *)realloc(optionindex, ((2 * max_options) + 1) * sizeof(int));
-  if (optionindex == NULL) {
+  if (optionindex == nullptr) {
     free(optionindex_saved);
     return false;
   }
   /* init new storage */
   for (unsigned int i = max_options; i < 2 * max_options; i++) {
-    options[i] = NULL;
+    options[i] = nullptr;
     optiontype[i] = INVALID_OPT;
     optionindex[i] = -1;
   }
@@ -213,21 +213,21 @@ bool AnyOption::doubleCharStorage() {
   char *optionchars_saved = optionchars;
   optionchars =
       (char *)realloc(optionchars, ((2 * max_char_options) + 1) * sizeof(char));
-  if (optionchars == NULL) {
+  if (optionchars == nullptr) {
     free(optionchars_saved);
     return false;
   }
   OptionType *optchartype_saved = optchartype;
   optchartype =
       (OptionType *)realloc(optchartype, ((2 * max_char_options) + 1) * sizeof(OptionType));
-  if (optchartype == NULL) {
+  if (optchartype == nullptr) {
     free(optchartype_saved);
     return false;
   }
   int *optcharindex_saved = optcharindex;
   optcharindex =
       (int *)realloc(optcharindex, ((2 * max_char_options) + 1) * sizeof(int));
-  if (optcharindex == NULL) {
+  if (optcharindex == nullptr) {
     free(optcharindex_saved);
     return false;
   }
@@ -245,12 +245,12 @@ bool AnyOption::doubleUsageStorage() {
   const char **usage_saved = usage;
   usage = (const char **)realloc(usage, ((2 * max_usage_lines) + 1) *
                                             sizeof(const char *));
-  if (usage == NULL) {
+  if (usage == nullptr) {
     free(usage_saved);
     return false;
   }
   for (unsigned int i = max_usage_lines; i < 2 * max_usage_lines; i++)
-    usage[i] = NULL;
+    usage[i] = nullptr;
   max_usage_lines = 2 * max_usage_lines;
   return true;
 }
@@ -263,7 +263,7 @@ void AnyOption::cleanup() {
   free(optchartype);
   free(optcharindex);
   free(usage);
-  if (values != NULL) {
+  if (values != nullptr) {
     for (int i = 0; i < g_value_counter; i++) {
       delete[] values[i];
       values[i] = nullptr;
@@ -664,7 +664,7 @@ bool AnyOption::valueStoreOK() {
       const unsigned int size = g_value_counter * sizeof(char *);
       values = new char *[size];
       for (unsigned int i = 0; i < g_value_counter; i++)
-        values[i] = NULL;
+        values[i] = nullptr;
       set = true;
     }
   }
@@ -676,13 +676,13 @@ bool AnyOption::valueStoreOK() {
  */
 char *AnyOption::getValue(const char *option) {
   if (!valueStoreOK())
-    return NULL;
+    return nullptr;
 
   for (unsigned int i = 0; i < option_counter; i++) {
     if (strcmp(options[i], option) == 0)
       return values[optionindex[i]];
   }
-  return NULL;
+  return nullptr;
 }
 
 bool AnyOption::getFlag(const char *option) {
@@ -697,12 +697,12 @@ bool AnyOption::getFlag(const char *option) {
 
 char *AnyOption::getValue(char option) {
   if (!valueStoreOK())
-    return NULL;
+    return nullptr;
   for (int i = 0; i < optchar_counter; i++) {
     if (optionchars[i] == option)
       return values[optcharindex[i]];
   }
-  return NULL;
+  return nullptr;
 }
 
 bool AnyOption::getFlag(char option) {
@@ -716,7 +716,7 @@ bool AnyOption::getFlag(char option) {
 }
 
 bool AnyOption::findFlag(char *val) {
-  if (val == NULL)
+  if (val == nullptr)
     return false;
 
   if (strcmp(TRUE_FLAG, val) == 0)
@@ -790,7 +790,7 @@ char *AnyOption::getArgv(int index) const {
   if (index < new_argc) {
     return (argv[new_argv[index]]);
   }
-  return NULL;
+  return nullptr;
 }
 
 /* option file sub routines */
@@ -818,7 +818,7 @@ char *AnyOption::readFile(const char *fname) {
   is.open(fname, ifstream::in);
   if (!is.good()) {
     is.close();
-    return NULL;
+    return nullptr;
   }
   is.seekg(0, ios::end);
   size_t length = (size_t)is.tellg();
@@ -836,18 +836,18 @@ char *AnyOption::readFile(const char *fname) {
  */
 bool AnyOption::consumeFile(char *buffer) {
 
-  if (buffer == NULL)
+  if (buffer == nullptr)
     return false;
 
   char *cursor = buffer; /* preserve the ptr */
-  char *pline = NULL;
+  char *pline = nullptr;
   int linelength = 0;
   bool newline = true;
   for (unsigned int i = 0; i < strlen(buffer); i++) {
     if (*cursor == endofline) { /* end of line */
-      if (pline != NULL)        /* valid line */
+      if (pline != nullptr)     /* valid line */
         processLine(pline, linelength);
-      pline = NULL;
+      pline = nullptr;
       newline = true;
     } else if (newline) { /* start of line */
       newline = false;

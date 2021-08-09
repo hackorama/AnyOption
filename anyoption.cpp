@@ -131,7 +131,7 @@ bool AnyOption::alloc() {
 
   size = (max_options + 1) * sizeof(const char *);
   options = (const char **)malloc(size);
-  optiontype = (int *)malloc((max_options + 1) * sizeof(int));
+  optiontype = (OptionType *)malloc((max_options + 1) * sizeof(OptionType));
   optionindex = (int *)malloc((max_options + 1) * sizeof(int));
   if (options == NULL || optiontype == NULL || optionindex == NULL)
     return false;
@@ -139,11 +139,11 @@ bool AnyOption::alloc() {
     mem_allocated = true;
   for (i = 0; i < max_options; i++) {
     options[i] = NULL;
-    optiontype[i] = 0;
+    optiontype[i] = INVALID_OPT;
     optionindex[i] = -1;
   }
   optionchars = (char *)malloc((max_char_options + 1) * sizeof(char));
-  optchartype = (int *)malloc((max_char_options + 1) * sizeof(int));
+  optchartype = (OptionType *)malloc((max_char_options + 1) * sizeof(OptionType));
   optcharindex = (int *)malloc((max_char_options + 1) * sizeof(int));
   if (optionchars == NULL || optchartype == NULL || optcharindex == NULL) {
     mem_allocated = false;
@@ -151,7 +151,7 @@ bool AnyOption::alloc() {
   }
   for (i = 0; i < max_char_options; i++) {
     optionchars[i] = '0';
-    optchartype[i] = 0;
+    optchartype[i] = INVALID_OPT;
     optcharindex[i] = -1;
   }
 
@@ -185,9 +185,9 @@ bool AnyOption::doubleOptStorage() {
     free(options_saved);
     return false;
   }
-  int *optiontype_saved = optiontype;
+  OptionType *optiontype_saved = optiontype;
   optiontype =
-      (int *)realloc(optiontype, ((2 * max_options) + 1) * sizeof(int));
+      (OptionType *)realloc(optiontype, ((2 * max_options) + 1) * sizeof(OptionType));
   if (optiontype == NULL) {
     free(optiontype_saved);
     return false;
@@ -202,7 +202,7 @@ bool AnyOption::doubleOptStorage() {
   /* init new storage */
   for (unsigned int i = max_options; i < 2 * max_options; i++) {
     options[i] = NULL;
-    optiontype[i] = 0;
+    optiontype[i] = INVALID_OPT;
     optionindex[i] = -1;
   }
   max_options = 2 * max_options;
@@ -217,9 +217,9 @@ bool AnyOption::doubleCharStorage() {
     free(optionchars_saved);
     return false;
   }
-  int *optchartype_saved = optchartype;
+  OptionType *optchartype_saved = optchartype;
   optchartype =
-      (int *)realloc(optchartype, ((2 * max_char_options) + 1) * sizeof(int));
+      (OptionType *)realloc(optchartype, ((2 * max_char_options) + 1) * sizeof(OptionType));
   if (optchartype == NULL) {
     free(optchartype_saved);
     return false;
@@ -234,7 +234,7 @@ bool AnyOption::doubleCharStorage() {
   /* init new storage */
   for (unsigned int i = max_char_options; i < 2 * max_char_options; i++) {
     optionchars[i] = '0';
-    optchartype[i] = 0;
+    optchartype[i] = INVALID_OPT;
     optcharindex[i] = -1;
   }
   max_char_options = 2 * max_char_options;
@@ -442,7 +442,7 @@ void AnyOption::setFlag(const char *opt, char optchar) {
   g_value_counter++;
 }
 
-void AnyOption::addOption(const char *opt, int type) {
+void AnyOption::addOption(const char *opt, OptionType type) {
   if (option_counter >= max_options) {
     if (doubleOptStorage() == false) {
       addOptionError(opt);
@@ -455,7 +455,7 @@ void AnyOption::addOption(const char *opt, int type) {
   option_counter++;
 }
 
-void AnyOption::addOption(char opt, int type) {
+void AnyOption::addOption(char opt, OptionType type) {
   if (!POSIX()) {
     printVerbose("Ignoring the option character \"");
     printVerbose(opt);

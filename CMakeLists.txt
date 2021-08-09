@@ -97,6 +97,19 @@ install(FILES "${PKG_CONFIG_FILE_NAME}"
 	COMPONENT "sdk"
 )
 
+option(WITH_TESTS ON "Build tests")
+
+if(WITH_TESTS)
+	find_package(Catch2)
+	include(Catch)
+
+	add_executable(tests "${CMAKE_CURRENT_SOURCE_DIR}/test.cpp")
+	target_link_libraries(tests PRIVATE ${PROJECT_NAME} Catch2::Catch2)
+
+	catch_discover_tests(tests)
+	enable_testing()
+endif()
+
 
 include(CPack)
 

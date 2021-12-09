@@ -515,6 +515,7 @@ void AnyOption::processCommandArgs(int _argc, char **_argv) {
 }
 
 void AnyOption::processCommandArgs() {
+  new_argc = 0;
   if (!(valueStoreOK() && CommandSet()))
     return;
 

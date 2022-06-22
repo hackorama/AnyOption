@@ -11,12 +11,15 @@
 #include <stdlib.h>
 #include <string>
 
-#define COMMON_OPT 1
-#define COMMAND_OPT 2
-#define FILE_OPT 3
-#define COMMON_FLAG 4
-#define COMMAND_FLAG 5
-#define FILE_FLAG 6
+enum OptionType {
+    INVALID_OPT = 0,
+    COMMON_OPT = 1,
+    COMMAND_OPT = 2,
+    FILE_OPT = 3,
+    COMMON_FLAG = 4,
+    COMMAND_FLAG = 5,
+    FILE_FLAG = 6,
+};
 
 #define COMMAND_OPTION_TYPE 1
 #define COMMAND_FLAG_TYPE 2
@@ -178,14 +181,14 @@ private:                /* the hidden data structure */
   /* option strings storage + indexing */
   unsigned int max_options; /* maximum number of options */
   const char **options; /* storage */
-  int *optiontype;      /* type - common, command, file */
+  OptionType *optiontype; /* type - common, command, file */
   int *optionindex;     /* index into value storage */
   unsigned int option_counter;   /* counter for added options  */
 
   /* option chars storage + indexing */
   unsigned int max_char_options;  /* maximum number options */
   char *optionchars;    /*  storage */
-  int *optchartype;     /* type - common, command, file */
+  OptionType *optchartype;     /* type - common, command, file */
   int *optcharindex;    /* index into value storage */
   int optchar_counter;  /* counter for added options  */
 
@@ -241,8 +244,8 @@ private: /* the hidden utils */
   bool setValue(char optchar, char *value);
   bool setFlagOn(char optchar);
 
-  void addOption(const char *option, int type);
-  void addOption(char optchar, int type);
+  void addOption(const char *option, OptionType type);
+  void addOption(char optchar, OptionType type);
   void addOptionError(const char *opt) const;
   void addOptionError(char opt) const;
   bool findFlag(char *value);

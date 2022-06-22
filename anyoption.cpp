@@ -170,10 +170,10 @@ bool AnyOption::alloc() {
 
 void AnyOption::allocValues(int index, size_t length) {
   if (values[index] == NULL) {
-    values[index] = (char *)malloc(length);
+    values[index] = new char [length];
   } else {
-    free(values[index]);
-    values[index] = (char *)malloc(length);
+    delete[] values[index];
+    values[index] = new char [length];
   }
 }
 
@@ -265,13 +265,16 @@ void AnyOption::cleanup() {
   free(usage);
   if (values != NULL) {
     for (int i = 0; i < g_value_counter; i++) {
-      free(values[i]);
-      values[i] = NULL;
+      delete[] values[i];
+      values[i] = nullptr;
     }
-    free(values);
+    delete[] values;
+    values = nullptr;
   }
-  if (new_argv != NULL)
-    free(new_argv);
+  if (new_argv != nullptr){
+    delete[] new_argv;
+    new_argv = nullptr;
+  }
 }
 
 void AnyOption::setCommandPrefixChar(char _prefix) {
@@ -521,7 +524,7 @@ void AnyOption::processCommandArgs() {
 
   if (max_legal_args == 0)
     max_legal_args = argc;
-  new_argv = (int *)malloc((max_legal_args + 1) * sizeof(int));
+  new_argv = new int[max_legal_args + 1];
   for (int i = 1; i < argc; i++) { /* ignore first argv */
     if (argv[i][0] == long_opt_prefix[0] &&
         argv[i][1] == long_opt_prefix[1]) { /* long GNU option */
@@ -590,20 +593,22 @@ int AnyOption::parseGNU(char *arg) {
     }
   }
   if (split_at > 0) { /* it is an option value pair */
-    char *tmp = (char *)malloc((split_at + 1) * sizeof(char));
+    char *tmp = new char[split_at + 1];
     for (size_t i = 0; i < split_at; i++)
       tmp[i] = arg[i];
     tmp[split_at] = '\0';
 
     if (matchOpt(tmp) >= 0) {
       setValue(options[matchOpt(tmp)], arg + split_at + 1);
-      free(tmp);
+      delete[] tmp;
+      tmp = nullptr;
     } else {
       printVerbose("Unknown command argument option : ");
       printVerbose(arg);
       printVerbose();
       printAutoUsage();
-      free(tmp);
+      delete[] tmp;
+      tmp = nullptr;
       return -1;
     }
   } else { /* regular options with no '=' sign  */
@@ -818,7 +823,7 @@ char *AnyOption::readFile(const char *fname) {
   is.seekg(0, ios::end);
   size_t length = (size_t)is.tellg();
   is.seekg(0, ios::beg);
-  buffer = (char *)malloc((length + 1) * sizeof(char));
+  buffer = new char [length + 1];
   is.read(buffer, length);
   is.close();
   buffer[length] = nullterminate;
@@ -854,7 +859,8 @@ bool AnyOption::consumeFile(char *buffer) {
     cursor++; /* keep moving */
     linelength++;
   }
-  free(buffer);
+  delete[] buffer;
+  buffer = nullptr;
   return true;
 }
 
@@ -879,7 +885,7 @@ bool AnyOption::consumeFile(char *buffer) {
  */
 
 void AnyOption::processLine(char *theline, int length) {
-  char *pline = (char *)malloc((length + 1) * sizeof(char));
+  char *pline = new char[length + 1];
   for (int i = 0; i < length; i++)
     pline[i] = *(theline++);
   pline[length] = nullterminate;
@@ -900,7 +906,8 @@ void AnyOption::processLine(char *theline, int length) {
     if (!found) /* not a pair */
       justValue(pline);
   }
-  free(pline);
+  delete[] pline;
+  pline = nullptr;
 }
 
 /*

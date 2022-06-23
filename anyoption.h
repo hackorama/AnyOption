@@ -21,12 +21,6 @@ enum OptionType {
     FILE_FLAG = 6,
 };
 
-#define COMMAND_OPTION_TYPE 1
-#define COMMAND_FLAG_TYPE 2
-#define FILE_OPTION_TYPE 3
-#define FILE_FLAG_TYPE 4
-#define UNKNOWN_TYPE 5
-
 enum {
 	DEFAULT_MAXOPTS=10,
 	MAX_LONG_PREFIX_LENGTH=2,

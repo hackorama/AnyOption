@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <string>
 
-enum OptionType {
+enum class OptionType {
     INVALID_OPT = 0,
     COMMON_OPT = 1,
     COMMAND_OPT = 2,
